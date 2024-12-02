@@ -3,8 +3,6 @@ import styled from "styled-components";
 
 export const SignupContainer = styled.div`
     width: 100%;
-    height: 100dvh;
-    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -57,6 +55,16 @@ export const SignupInputError = styled.p`
     font-size: 14px;
 `
 
+export const SignupSelectInput = styled.select`
+    padding: 12px;
+    outline: none;
+    border-radius: 10px;
+`
+
+export const SignupOptionsInput = styled.option`
+    
+` 
+
 export const SignupBtn = styled.button`
     border-radius: 20px;
     background-color: #16d8ff;
@@ -68,3 +76,4 @@ export const SignupBtn = styled.button`
     border: none;
     outline: none;
 `
+
