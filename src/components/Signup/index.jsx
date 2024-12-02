@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { SignupBtn, SignupContainer, SignupHeading, SignupInput, SignupInputError, SignupInputFieldWrap, SignupInputLabel, SignupOptionsInput, SignupSelectInput, SignupWrap, SigunpForm } from '../../styles/Signup'
+import { FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 const Signup = () => {
 
@@ -13,6 +15,8 @@ const Signup = () => {
         playingRole: "",
         battingStyle: ""
     })
+
+    const [isPassVisible, setIsPassVisible] = useState(false)
 
     const [errors, setErrors] = useState({
         name: "",
@@ -36,6 +40,7 @@ const Signup = () => {
             [name]: "",
         }));
     };
+
 
     const handleForm = (e) => {
         e.preventDefault();
@@ -162,7 +167,9 @@ const Signup = () => {
                         <SignupInputLabel>
                             Password
                         </SignupInputLabel>
-                        <SignupInput type="password" name="password" value={formData.password} onChange={handleChange} />
+                        <SignupInput type={isPassVisible ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} />
+                        {!isPassVisible && (<FaRegEye style={{position: "absolute", right: "10px", top: "38px", cursor: "pointer"}} onClick={() => setIsPassVisible(!isPassVisible)} />)}
+                        {isPassVisible && (<FaRegEyeSlash style={{position: "absolute", right: "10px", top: "38px", cursor: "pointer"}} onClick={() => setIsPassVisible(!isPassVisible)} />)}
                         {errors.password && <SignupInputError>{errors.password}</SignupInputError>}
                     </SignupInputFieldWrap>
 

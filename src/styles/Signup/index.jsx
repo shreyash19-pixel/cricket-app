@@ -35,6 +35,7 @@ export const SignupInputFieldWrap = styled.div`
     flex-direction: column;
     gap: 6px;
     min-height: 92px;
+    position: relative;
 `
 
 export const SignupInputLabel = styled.label`
