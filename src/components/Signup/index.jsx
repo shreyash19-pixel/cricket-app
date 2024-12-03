@@ -1,19 +1,25 @@
 import React, { useState } from 'react'
-import { SignupBtn, SignupContainer, SignupHeading, SignupInput, SignupInputError, SignupInputFieldWrap, SignupInputLabel, SignupOptionsInput, SignupSelectInput, SignupWrap, SigunpForm } from '../../styles/Signup'
+import { SignupBtn, SignupContainer, SignupHeading, SignupInputError, SignupInputFieldWrap, SignupInputLabel, SignupLink, SignupOptionsInput, SignupSelectInput, SigunpForm } from '../../styles/Signup'
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
+import usePost from '../../hooks/usePost';
 
 const Signup = () => {
+
+    const { postData } = usePost('');
 
 
     const [formData, setFormData] = useState({
         name: "",
         password: "",
-        mobile: "",
+        tel: "",
         email: "",
         jerseyNumber: "",
         playingRole: "",
-        battingStyle: ""
+        battingStyle: "",
+        bowlingStyle: "",
+        pace: "",
+        spin: ""
     })
 
     const [isPassVisible, setIsPassVisible] = useState(false)
@@ -21,11 +27,14 @@ const Signup = () => {
     const [errors, setErrors] = useState({
         name: "",
         password: "",
-        mobile: "",
+        tel: "",
         email: "",
         jerseyNumber: "",
         playingRole: "",
-        battingStyle: ""
+        battingStyle: "",
+        bowlingStyle: "",
+        pace: "",
+        spin: ""
     });
 
     const handleChange = (e) => {
@@ -57,11 +66,11 @@ const Signup = () => {
             newErrors.email = "Please enter a valid name.";
         }
 
-        if (formData.mobile.trim() === "" || !mobileRegex.test(formData.mobile)) {
-            newErrors.mobile = "Please enter a valid mobile number.";
+        if (formData.tel.trim() === "" || !mobileRegex.test(formData.tel)) {
+            newErrors.tel = "Please enter a valid mobile number.";
         }
-        else if (formData.mobile.length > 10 || formData.mobile.length < 10) {
-            newErrors.mobile = "Length of mobile number should be 10";
+        else if (formData.tel.length < 10) {
+            newErrors.tel = "Length of mobile number should be 10";
         }
 
         if (formData.jerseyNumber.length > 0) {
@@ -89,95 +98,140 @@ const Signup = () => {
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length === 0) {
-           
+            postData(formData)
         }
     };
 
     return (
         <SignupContainer>
-            <SignupWrap>
+            <SigunpForm onSubmit={handleForm}>
                 <SignupHeading>
                     Sign up
                 </SignupHeading>
-                <SigunpForm onSubmit={handleForm}>
-                    <SignupInputFieldWrap>
-                        <SignupInputLabel>
-                            Full Name
-                        </SignupInputLabel>
-                        <SignupInput type="text" name="name" value={formData.name} onChange={handleChange} />
-                        {errors.name && <SignupInputError>{errors.name}</SignupInputError>}
-                    </SignupInputFieldWrap>
+                <SignupInputFieldWrap>
+                    <SignupInputLabel>
+                        Full Name
+                    </SignupInputLabel>
+                    <input type="text" name="name" value={formData.name} onChange={handleChange} />
+                    {errors.name && <SignupInputError>{errors.name}</SignupInputError>}
+                </SignupInputFieldWrap>
 
-                    <SignupInputFieldWrap>
-                        <SignupInputLabel>
-                            Mobile Number
-                        </SignupInputLabel>
-                        <SignupInput type="text" name="mobile" value={formData.mobile} onChange={handleChange} />
-                        {errors.mobile && <SignupInputError>{errors.mobile}</SignupInputError>}
-                    </SignupInputFieldWrap>
+                <SignupInputFieldWrap>
+                    <SignupInputLabel>
+                        Mobile Number
+                    </SignupInputLabel>
+                    <input type="text" maxLength={10} name="tel" value={formData.mobile} onChange={handleChange} />
+                    {errors.tel && <SignupInputError>{errors.tel}</SignupInputError>}
+                </SignupInputFieldWrap>
 
-                    <SignupInputFieldWrap>
-                        <SignupInputLabel>
-                            Jersey Number
-                        </SignupInputLabel>
-                        <SignupInput type="text" name="jerseyNumber" value={formData.jerseyNumber} onChange={handleChange} />
-                        {errors.jerseyNumber && <SignupInputError>{errors.jerseyNumber}</SignupInputError>}
-                    </SignupInputFieldWrap>
+                <SignupInputFieldWrap>
+                    <SignupInputLabel>
+                        Jersey Number
+                    </SignupInputLabel>
+                    <input maxLength={4} type="text" name="jerseyNumber" value={formData.jerseyNumber} onChange={handleChange} />
+                    {errors.jerseyNumber && <SignupInputError>{errors.jerseyNumber}</SignupInputError>}
+                </SignupInputFieldWrap>
 
-                    <SignupInputFieldWrap>
-                        <SignupInputLabel>
-                            Email
-                        </SignupInputLabel>
-                        <SignupInput type="email" name="email" value={formData.email} onChange={handleChange} />
-                        {errors.email && <SignupInputError>{errors.email}</SignupInputError>}
-                    </SignupInputFieldWrap>
+                <SignupInputFieldWrap>
+                    <SignupInputLabel>
+                        Email
+                    </SignupInputLabel>
+                    <input type="email" name="email" value={formData.email} onChange={handleChange} />
+                    {errors.email && <SignupInputError>{errors.email}</SignupInputError>}
+                </SignupInputFieldWrap>
 
 
-                    <SignupInputFieldWrap>
-                        <SignupInputLabel>
-                            Playing Role
-                        </SignupInputLabel>
-                        <SignupSelectInput name="playingRole"
-                            value={formData.playingRole} onChange={handleChange}>
-                            <SignupOptionsInput selected disabled>Select playing role</SignupOptionsInput>
-                            <SignupOptionsInput value="all-rounder">All Rounder</SignupOptionsInput>
-                            <SignupOptionsInput value="batter">Batter</SignupOptionsInput>
-                            <SignupOptionsInput value="bowler">Bowler</SignupOptionsInput>
-                            <SignupOptionsInput value="wicketkeeper-batter">Wicket Keeper Batter</SignupOptionsInput>
-                        </SignupSelectInput>
-                        {errors.playingRole && <SignupInputError>{errors.playingRole}</SignupInputError>}
+                <SignupInputFieldWrap>
+                    <SignupInputLabel>
+                        Playing Role
+                    </SignupInputLabel>
+                    <SignupSelectInput name="playingRole"
+                        value={formData.playingRole} onChange={handleChange}>
+                        <SignupOptionsInput value="" selected disabled>Select playing role</SignupOptionsInput>
+                        <SignupOptionsInput value="all-rounder">All Rounder</SignupOptionsInput>
+                        <SignupOptionsInput value="batter">Batter</SignupOptionsInput>
+                        <SignupOptionsInput value="bowler">Bowler</SignupOptionsInput>
+                        <SignupOptionsInput value="wicketkeeper-batter">Wicket Keeper Batter</SignupOptionsInput>
+                    </SignupSelectInput>
+                    {errors.playingRole && <SignupInputError>{errors.playingRole}</SignupInputError>}
 
-                    </SignupInputFieldWrap>
+                </SignupInputFieldWrap>
 
-                    <SignupInputFieldWrap>
-                        <SignupInputLabel>
-                            Batting Style
-                        </SignupInputLabel>
-                        <SignupSelectInput name="battingStyle"
-                            value={formData.battingStyle} onChange={handleChange}>
-                            <SignupOptionsInput selected disabled>Select batting style</SignupOptionsInput>
-                            <SignupOptionsInput value="right-hand-bat">Right Hand Bat</SignupOptionsInput>
-                            <SignupOptionsInput value="left-hand-bat">Left Hand Bat</SignupOptionsInput>
-                        </SignupSelectInput>
-                        {errors.battingStyle && <SignupInputError>{errors.battingStyle}</SignupInputError>}
+                <SignupInputFieldWrap>
+                    <SignupInputLabel>
+                        Batting Style
+                    </SignupInputLabel>
+                    <SignupSelectInput name="battingStyle"
+                        value={formData.battingStyle} onChange={handleChange}>
+                        <SignupOptionsInput value="" selected disabled>Select batting style</SignupOptionsInput>
+                        <SignupOptionsInput value="right-hand-bat">Right Hand Bat</SignupOptionsInput>
+                        <SignupOptionsInput value="left-hand-bat">Left Hand Bat</SignupOptionsInput>
+                    </SignupSelectInput>
+                    {errors.battingStyle && <SignupInputError>{errors.battingStyle}</SignupInputError>}
 
-                    </SignupInputFieldWrap>
+                </SignupInputFieldWrap>
 
-                    <SignupInputFieldWrap>
-                        <SignupInputLabel>
-                            Password
-                        </SignupInputLabel>
-                        <SignupInput type={isPassVisible ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} />
-                        {!isPassVisible && (<FaRegEye style={{position: "absolute", right: "10px", top: "38px", cursor: "pointer"}} onClick={() => setIsPassVisible(!isPassVisible)} />)}
-                        {isPassVisible && (<FaRegEyeSlash style={{position: "absolute", right: "10px", top: "38px", cursor: "pointer"}} onClick={() => setIsPassVisible(!isPassVisible)} />)}
-                        {errors.password && <SignupInputError>{errors.password}</SignupInputError>}
-                    </SignupInputFieldWrap>
+                <SignupInputFieldWrap>
+                    <SignupInputLabel>
+                        Bowling Style
+                    </SignupInputLabel>
+                    <SignupSelectInput name="bowlingStyle"
+                        value={formData.bowlingStyle} onChange={handleChange}>
+                        <SignupOptionsInput value="" selected disabled>Select bowling style</SignupOptionsInput>
+                        <SignupOptionsInput value="pace">Pace</SignupOptionsInput>
+                        <SignupOptionsInput value="spin">Spin</SignupOptionsInput>
+                    </SignupSelectInput>
 
-                    <SignupBtn type="submit">
-                        Create Account
-                    </SignupBtn>
-                </SigunpForm>
-            </SignupWrap>
+                </SignupInputFieldWrap>
+
+                {formData.bowlingStyle === "pace" && (<SignupInputFieldWrap>
+                    <SignupInputLabel>
+                        Pace
+                    </SignupInputLabel>
+                    <SignupSelectInput name="pace"
+                        value={formData.pace} onChange={handleChange}>
+                        <SignupOptionsInput value="" selected disabled>Select</SignupOptionsInput>
+                        <SignupOptionsInput value="right-arm-fast">Right Arm Fast</SignupOptionsInput>
+                        <SignupOptionsInput value="right-arm-medium">Right Arm Medium</SignupOptionsInput>
+                        <SignupOptionsInput value="left-arm-fasr">Left Arm Fast</SignupOptionsInput>
+                        <SignupOptionsInput value="left-arm-medium">Left Arm Medium</SignupOptionsInput>
+                    </SignupSelectInput>
+
+                </SignupInputFieldWrap>)}
+
+                {formData.bowlingStyle === "spin" && (<SignupInputFieldWrap>
+                    <SignupInputLabel>
+                        Spin
+                    </SignupInputLabel>
+                    <SignupSelectInput name="spin"
+                        value={formData.spin} onChange={handleChange}>
+                        <SignupOptionsInput value="" selected disabled>Select</SignupOptionsInput>
+                        <SignupOptionsInput value="right-arm-off-break">Right Arm Off Break</SignupOptionsInput>
+                        <SignupOptionsInput value="right-arm-leg-break">Right Arm Leg Break</SignupOptionsInput>
+                        <SignupOptionsInput value="left-arm-off-break">Left Arm Off Break</SignupOptionsInput>
+                        <SignupOptionsInput value="left-arm-leg-break">Left Arm Leg Break</SignupOptionsInput>
+                    </SignupSelectInput>
+
+                </SignupInputFieldWrap>)}
+
+                <SignupInputFieldWrap>
+                    <SignupInputLabel>
+                        Password
+                    </SignupInputLabel>
+                    <input type={isPassVisible ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} />
+                    {!isPassVisible && (<FaRegEye style={{ position: "absolute", right: "10px", top: "38px", cursor: "pointer" }} onClick={() => setIsPassVisible(!isPassVisible)} />)}
+                    {isPassVisible && (<FaRegEyeSlash style={{ position: "absolute", right: "10px", top: "38px", cursor: "pointer" }} onClick={() => setIsPassVisible(!isPassVisible)} />)}
+                    {errors.password && <SignupInputError>{errors.password}</SignupInputError>}
+
+                    <SignupLink to="/login" >
+                        Alreay have an account? <span>Login</span>
+                    </SignupLink>
+                </SignupInputFieldWrap>
+
+                <SignupBtn type="submit">
+                    Create Account
+                </SignupBtn>
+            </SigunpForm>
         </SignupContainer>
     )
 }

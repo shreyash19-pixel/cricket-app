@@ -1,19 +1,14 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 
 export const SignupContainer = styled.div`
     width: 100%;
+    height: ${(props) => props.login ? "100vh" : "100%"};
     display: flex;
     align-items: center;
     justify-content: center;
-`
-
-export const SignupWrap = styled.div`
-    width: 100%;
-    max-width: 400px;
-    min-height: 300px;
-    padding: 12px;
-
+    flex-direction: column;
 `
 
 export const SignupHeading = styled.h1`
@@ -23,10 +18,14 @@ export const SignupHeading = styled.h1`
 
 export const SigunpForm = styled.form`
     width: 100%;
+    max-width: 400px;
+    min-height: 300px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-top: 16px;
+    
 `
 
 export const SignupInputFieldWrap = styled.div`
@@ -36,6 +35,15 @@ export const SignupInputFieldWrap = styled.div`
     gap: 6px;
     min-height: 92px;
     position: relative;
+    align-items : ${(props) => props.profile ? "center" : "flex-start"};
+
+    input{
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        outline: none;
+        border: 1px solid black;
+    }
 `
 
 export const SignupInputLabel = styled.label`
@@ -43,20 +51,24 @@ export const SignupInputLabel = styled.label`
 
 `
 
-export const SignupInput = styled.input`
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    outline: none;
-    border: 1px solid black;
-`
-
 export const SignupInputError = styled.p`
     color: red;
     font-size: 14px;
 `
 
+export const SignupLink = styled(Link)`
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    margin-block: 10px;
+
+    span{
+        text-decoration: underline;
+    }
+`
+
 export const SignupSelectInput = styled.select`
+    width: 100%;
     padding: 12px;
     outline: none;
     border-radius: 10px;
@@ -64,11 +76,11 @@ export const SignupSelectInput = styled.select`
 
 export const SignupOptionsInput = styled.option`
     
-` 
+`
 
 export const SignupBtn = styled.button`
     border-radius: 20px;
-    background-color: #16d8ff;
+    background-color: orange;
     color: white;
     padding: 14px 16px;
     cursor: pointer;
